@@ -10,10 +10,12 @@
     #define PATH_SEP "/"
 #endif
 
+#define INCREMENT "--"
+
 static size_t reclevel = 0;
 
 void print_usage(char* program) {
-    printf("Usage: %s [DIRECTORY]\nPrint filesystem tree of the specified directory.\n");
+    printf("Usage: %s [DIRECTORY]\nPrint filesystem tree of the specified directory.\n", program);
 }
 
 void walk_dir(const char* dirpath) {
@@ -31,10 +33,10 @@ void walk_dir(const char* dirpath) {
         char fullpath[PATH_MAX];
         snprintf(fullpath, sizeof(fullpath), "%s"PATH_SEP"%s", dirpath, root->d_name);
 
-        if (!(strcmp(root->d_name, ".") == 0 || strcmp(root->d_name, "..") == 0)) {
+        if (!(strcmp(root->d_name, ".") == 0 || strcmp(root->d_name, "..") == 0) && *(root->d_name) != '.') {
             printf("|");
-            for (int i = 0; i <= reclevel; ++i) {
-                printf("-");
+            for (size_t i = 0; i <= reclevel; ++i) {
+                printf(INCREMENT);
             }
             printf("%s\n", root->d_name);
         }
@@ -46,7 +48,7 @@ void walk_dir(const char* dirpath) {
             }
             case DT_DIR: {
                 char* name = root->d_name;
-                if (strcmp(name, ".") == 0 || strcmp(name, "..") == 0) {
+                if (strcmp(name, ".") == 0 || strcmp(name, "..") == 0 || *name == '.') {
                     continue;
                 }
                 reclevel += 1;
