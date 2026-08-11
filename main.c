@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <errno.h>
-#include <dirent.h>
+#include "dirent_compat.h"
 #include <string.h>
 #include <stdlib.h>
 
